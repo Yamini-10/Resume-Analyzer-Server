@@ -1,0 +1,19 @@
+import {
+  Controller,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ResumeService } from './resume.service';
+
+@Controller('resume')
+export class ResumeController {
+  constructor(private readonly resumeService: ResumeService) {}
+
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file'))
+  uploadResume(@UploadedFile() file) {
+    return this.resumeService.parseResume(file);
+  }
+}
